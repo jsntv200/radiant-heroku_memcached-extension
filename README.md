@@ -5,6 +5,9 @@ A simple extension to use Memcache on Heroku.
 
 ## Installation
 
+These instructions are for Radiant v1.0.0.rc3 or above which uses
+Bundler.
+
 Add the following to your Radiant Gemfile :
 
 ```
