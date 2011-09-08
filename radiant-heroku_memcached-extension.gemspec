@@ -12,7 +12,6 @@ Gem::Specification.new do |s|
   s.summary     = RadiantHerokuMemcachedExtension::SUMMARY
   s.description = RadiantHerokuMemcachedExtension::DESCRIPTION
 
-  s.add_dependency "memcache-client",      "~> 1.8.5"
   s.add_dependency "memcached-northscale", "~> 0.19.5.4"
 
   ignores = if File.exist?('.gitignore')
