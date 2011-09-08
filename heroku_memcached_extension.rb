@@ -6,13 +6,19 @@ class HerokuMemcachedExtension < Radiant::Extension
   url         RadiantHerokuMemcachedExtension::URL
 
   extension_config do |config|
-    if ENV['MEMCACHE_SERVERS'].present?
+    if Rails.env.production?
       require "memcached"
-
       cache = Memcached.new
-      config.cache_store = :mem_cache_store, Memcached::Rails.new
-      config.middleware.delete ::Radiant::Cache
-      config.middleware.use ::Radiant::Cache, :metastore => cache, :entitystore => cache
+
+      begin
+        if cache.stats.present?
+          config.cache_store = :mem_cache_store, Memcached::Rails.new
+          config.middleware.delete ::Radiant::Cache
+          config.middleware.use ::Radiant::Cache, :metastore => cache, :entitystore => cache
+        end
+      rescue Memcached::SomeErrorsWereReported => e
+        puts %{Memcached #{e}. Is the Heroku memcache addon installed? http://devcenter.heroku.com/articles/memcache#deploying_to_heroku}
+      end
     end
   end
 end
